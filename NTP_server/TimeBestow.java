@@ -31,7 +31,7 @@ public class TimeBestow implements Callable<Void> {
     }
     
     private String timeStamp() {
-        return new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()); 
+        return new SimpleDateFormat("HH:mm:ss.SS").format(Calendar.getInstance().getTime()); 
     }
 
     private void unmarshaling() {
