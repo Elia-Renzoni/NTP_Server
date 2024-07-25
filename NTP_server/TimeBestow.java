@@ -62,6 +62,7 @@ public class TimeBestow implements Callable<Void> {
             var writer = new OutputStreamWriter(this.connection.getOutputStream());
             this.replyTimestamp = this.timeStamp();
             writer.write(this.marhsaling(senderTimestamp, replyTimestamp, acceptionTimestamp));
+            writer.flush();
         } catch (IOException e) {
             System.out.println(e);
         } finally {

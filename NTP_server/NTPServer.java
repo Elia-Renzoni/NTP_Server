@@ -32,5 +32,4 @@ public class NTPServer {
             System.out.println(ex);
         }
     }
-    
 }
