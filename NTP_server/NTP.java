@@ -9,18 +9,9 @@ import java.util.concurrent.Executors;
 
 public class NTP {
     private static int LISTEN_PORT = 4040;
+    private static int THREADS = 200;
     public static void main(String ...args) {
-        ExecutorService threadPool = Executors.newFixedThreadPool(200);
-
-        try {
-            ServerSocket ntpConn = new ServerSocket(NTP.LISTEN_PORT);
-            while (true) {
-                Socket conn = ntpConn.accept();
-                Callable<Void> thread = new TimeBestow();
-                threadPool.submit(thread);
-            }
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
+        NTPServer server = new NTPServer(NTP.LISTEN_PORT, NTP.THREADS);
+        server.start();
     }
 }
