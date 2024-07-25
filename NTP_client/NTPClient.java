@@ -1,5 +1,6 @@
 package NTP_client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -31,6 +32,15 @@ public class NTPClient extends Thread {
 
             // now wait for the response...
             var reader = new InputStreamReader(this.conn.getInputStream());
+            BufferedReader r = new BufferedReader(reader);
+
+            this.beforeSendinTimeStamp = r.readLine();
+            this.acceptedServerConnTimeStamp = r.readLine();
+            this.whenSendingServerTimeStamp = r.readLine();
+
+            this.whenRecevingClientTimeStamp = this.getTimeStamp();
+
+            System.out.println(super.getName() + " received server response!!");
             
         } catch (IOException e) {
             e.printStackTrace();
