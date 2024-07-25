@@ -39,7 +39,7 @@ public class NTPClient extends Thread {
     private void calculateClockSkew() {
         // clock skew formula: ((t3 + Ndelay / 2) - t4)
         // Ndelay formula: (t4 - t1) - (t3 - t2)
-        SimpleDateFormat sdf = new SimpleDateFormat();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SS");
         try {
             this.t1 = sdf.parse(this.beforeSendinTimeStamp);
             this.t2 = sdf.parse(this.acceptedServerConnTimeStamp);
@@ -49,12 +49,22 @@ public class NTPClient extends Thread {
             System.out.println(ex);
         }
 
+
         this.networkDelay = (t4.getTime() - t1.getTime()) - (t3.getTime() - t2.getTime());
         this.serverTimeStamp = t3.getTime() + this.networkDelay / 2;
-        this.clockSkew = this.serverTimeStamp - t4.getTime();
+        this.clockSkew = (t4.getTime() - this.serverTimeStamp) % 1000;
     }
 
     private void clockSync() {
+        if (this.clockSkew < 250) {
+            // todo
+
+        } else if (this.clockSkew >= 250 && this.clockSkew < 1000) {
+            this.clockSkew = this.serverTimeStamp;
+            System.out.println("Stepping Procedure On, the clock skew now is: " + this.clockSkew);
+        } else {
+            System.out.println("Cant sync. the clock skew due to crash server fault");
+        }
     }
     
     public void run() { 
@@ -75,7 +85,7 @@ public class NTPClient extends Thread {
 
             // calculate the clock skew then sync. the clock
             this.calculateClockSkew();
-            this.clockSync();
+            System.out.println(super.getName() + " clock skew: " + this.clockSkew);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
