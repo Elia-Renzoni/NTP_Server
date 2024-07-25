@@ -23,6 +23,15 @@ public class NTPClient extends Thread {
     private String getTimeStamp() {
         return new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()); 
     }
+
+    private int getClockSkew() {
+        // TODO
+        return 0;
+    }
+
+    private void clockSync() {
+        // TODO
+    }
     
     public void run() { 
         try {
