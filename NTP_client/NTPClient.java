@@ -8,15 +8,14 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class NTPClient extends Thread {
+public class NTPClient {
     private Socket conn;
     private String beforeSendinTimeStamp;
     private String acceptedServerConnTimeStamp;
     private String whenSendingServerTimeStamp;
     private String whenRecevingClientTimeStamp;
 
-    public NTPClient(final int tindex, final Socket connection) {
-        super("Client Number: " + tindex);
+    public NTPClient(final Socket connection) {
         this.conn = connection;
     }
 
@@ -24,8 +23,7 @@ public class NTPClient extends Thread {
         return new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()); 
     }
     
-    @Override
-    public void run() { 
+    public void start() { 
         try {
             var writer = new OutputStreamWriter(this.conn.getOutputStream());
             writer.write(this.getTimeStamp() + "\n");
@@ -40,7 +38,7 @@ public class NTPClient extends Thread {
 
             this.whenRecevingClientTimeStamp = this.getTimeStamp();
 
-            System.out.println(super.getName() + " received server response!!");
+            System.out.println(" received server response!!");
             
         } catch (IOException e) {
             e.printStackTrace();

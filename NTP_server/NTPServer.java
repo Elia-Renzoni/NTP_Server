@@ -21,8 +21,10 @@ public class NTPServer {
 
         try {
             ServerSocket NTPconn = new ServerSocket(this.listenPort);
+            System.out.println("Server Listening...");
             while (true) {
                 Socket conn = NTPconn.accept();
+                System.out.println("Accepted Request!");
                 Callable<Void> thread = new TimeBestow(conn);
                 threadPool.submit(thread); 
             }
